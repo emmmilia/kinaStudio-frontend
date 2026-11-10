@@ -36,9 +36,9 @@ Chore: actualiza dependencias de Vite
 
 ## Código
 
-- Componentes: funciones de React en `PascalCase`, un componente por archivo, con el mismo nombre que el archivo (`FormularioEsteticista.tsx`).
+- Componentes: funciones de React en `PascalCase`, un componente por archivo, con el mismo nombre que el archivo (`FormularioEsteticista.jsx`).
 - Funciones, variables y hooks en `camelCase`; los hooks propios empiezan con `use` (`useUsuarios`).
-- Todo con TypeScript: sin `any`. Los datos que vienen de la API se describen con tipos en `src/types/`.
+- Se usa JavaScript con módulos (`import` / `export`). Cuando no es obvio qué forma tienen los datos que entran o salen de una función de `src/api/`, se documenta con un comentario JSDoc.
 - Las llamadas al back-end se hacen **solo** desde `src/api/`. Los componentes y páginas usan esas funciones, no hacen `fetch` directo.
 - La URL de la API sale de `import.meta.env.VITE_API_URL`; nunca se escribe a mano en el código.
 - Los componentes se mantienen chicos: si uno hace demasiado, se divide.

@@ -15,7 +15,7 @@ Este repositorio contiene **solo el front-end**. El back-end (API REST) está en
 
 | Qué | Tecnología |
 |---|---|
-| Framework | React con TypeScript |
+| Framework | React (JavaScript) |
 | Empaquetador | Vite |
 | Calidad de código | ESLint |
 | Integración continua | GitHub Actions (lint y build en cada Pull Request) |
@@ -57,7 +57,7 @@ Vite solo expone al navegador las variables que empiezan con `VITE_`. Todo lo qu
 | Comando | Qué hace |
 |---|---|
 | `npm run dev` | Levanta el servidor de desarrollo |
-| `npm run build` | Compila para producción (revisa los tipos de TypeScript) |
+| `npm run build` | Compila para producción |
 | `npm run lint` | Revisa el código con ESLint |
 | `npm run preview` | Sirve localmente el resultado de `build` |
 
@@ -74,9 +74,8 @@ kinaStudio-frontend/
 │   ├── components/      Componentes reutilizables
 │   ├── pages/           Una pantalla por página
 │   ├── hooks/           Hooks propios
-│   ├── types/           Tipos de TypeScript
-│   ├── App.tsx
-│   └── main.tsx
+│   ├── App.jsx
+│   └── main.jsx
 ├── .env.example
 ├── CONVENCIONES.md
 └── package.json
@@ -106,6 +105,6 @@ Las reglas de ramas, commits y Pull Requests están en [CONVENCIONES.md](CONVENC
 
 | Funcionalidad | Estado |
 |---|---|
-| Proyecto base con Vite, React y TypeScript | Listo |
+| Proyecto base con Vite y React | Listo |
 | Registro de esteticistas (RF.01) | Pendiente |
 | Login y sesión (RF.2) | Pendiente |
