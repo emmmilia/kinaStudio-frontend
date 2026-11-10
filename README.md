@@ -1,75 +1,111 @@
-# React + TypeScript + Vite
+# Kina Studio — Front-end
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interfaz web de Kina Studio, un sistema de gestión para un estudio de estética (agenda de turnos, clientas, pagos y señas, comisiones, stock y reportes).
 
-Currently, two official plugins are available:
+Proyecto final de la carrera Analista Programador, Universidad ORT Uruguay.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Este repositorio contiene **solo el front-end**. El back-end (API REST) está en [kinaStudio-springboot](https://github.com/emmmilia/kinaStudio-springboot).
 
-## React Compiler
+## Equipo
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Emilia García
+- Alina Reyes
 
-## Expanding the ESLint configuration
+## Tecnologías
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+| Qué | Tecnología |
+|---|---|
+| Framework | React con TypeScript |
+| Empaquetador | Vite |
+| Calidad de código | ESLint |
+| Integración continua | GitHub Actions (lint y build en cada Pull Request) |
+| Back-end | API REST en Java / Spring Boot (otro repositorio) |
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Cómo levantar el proyecto
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Requisitos
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Node.js 20.19 o superior (se recomienda la versión LTS)
+- Git
 
+### Pasos
+
+```powershell
+git clone https://github.com/emmmilia/kinaStudio-frontend.git
+cd kinaStudio-frontend
+npm install
+Copy-Item .env.example .env
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+La aplicación queda en `http://localhost:5173`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Para que muestre datos reales, el back-end tiene que estar levantado (ver el README del repositorio del back).
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Variables de entorno
+
+Se definen en el archivo `.env`, que **no se sube al repositorio**. El archivo `.env.example` es la plantilla.
+
+| Variable | Para qué sirve | Valor por defecto |
+|---|---|---|
+| `VITE_API_URL` | URL base de la API del back-end | `http://localhost:8080` |
+
+Vite solo expone al navegador las variables que empiezan con `VITE_`. Todo lo que se ponga ahí es visible para cualquiera que abra la aplicación, así que **nunca** se guardan claves ni tokens en estas variables.
+
+## Scripts
+
+| Comando | Qué hace |
+|---|---|
+| `npm run dev` | Levanta el servidor de desarrollo |
+| `npm run build` | Compila para producción (revisa los tipos de TypeScript) |
+| `npm run lint` | Revisa el código con ESLint |
+| `npm run preview` | Sirve localmente el resultado de `build` |
+
+Antes de abrir un Pull Request, correr `npm run lint` y `npm run build`: los dos tienen que terminar sin errores.
+
+## Estructura
 
 ```
+kinaStudio-frontend/
+├── .github/workflows/   Integración continua
+├── public/              Archivos estáticos
+├── src/
+│   ├── api/             Llamadas al back-end
+│   ├── components/      Componentes reutilizables
+│   ├── pages/           Una pantalla por página
+│   ├── hooks/           Hooks propios
+│   ├── types/           Tipos de TypeScript
+│   ├── App.tsx
+│   └── main.tsx
+├── .env.example
+├── CONVENCIONES.md
+└── package.json
+```
+
+## Conexión con el back-end
+
+Todas las respuestas de la API tienen la misma forma: un objeto `commands` con una lista de comandos, cada uno con un `id` y un `parametro`.
+
+```json
+{ "commands": [ { "id": "nuevoUsuario", "parametro": { "...": "..." } } ] }
+```
+
+Las llamadas a la API se hacen solo desde `src/api/`, usando `VITE_API_URL` como base. Los componentes no hacen `fetch` directo.
+
+Para que el navegador pueda llamar al back desde `localhost:5173`, el back-end tiene que habilitar CORS para ese origen (se configura junto con el login).
+
+## Integración continua
+
+El workflow `CI` corre en cada Pull Request y en cada push a `main`: instala dependencias, ejecuta `npm run lint` y `npm run build`. El check **Lint y build** es obligatorio para mergear.
+
+## Cómo trabajamos
+
+Las reglas de ramas, commits y Pull Requests están en [CONVENCIONES.md](CONVENCIONES.md).
+
+## Estado
+
+| Funcionalidad | Estado |
+|---|---|
+| Proyecto base con Vite, React y TypeScript | Listo |
+| Registro de esteticistas (RF.01) | Pendiente |
+| Login y sesión (RF.2) | Pendiente |
