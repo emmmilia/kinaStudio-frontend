@@ -1,27 +1,74 @@
-// Se le saca la barra final (si la tiene) para no armar URLs con "//", que el back rechaza.
 const API_URL = (import.meta.env.VITE_API_URL ?? 'http://localhost:8080').replace(/\/$/, '');
 
-/**
- * Hace un POST con los datos como formulario (lo que espera el back con @RequestParam).
- * Si el back responde con error, lanza un Error con el mensaje que devolvió.
- *
- * @param {string} ruta Ruta del endpoint, por ejemplo '/acceso/registroEsteticista'
- * @param {Object<string, string>} datos Campos del formulario
- */
-export async function postFormulario(ruta, datos) {
-  let respuesta;
+//hace el fetch al back enviando la cookie de sesión, si no hay conexión lanza error
+async function pedir(ruta, opciones) {
   try {
-    respuesta = await fetch(`${API_URL}${ruta}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(datos),
-    });
+    return await fetch(`${API_URL}${ruta}`, { credentials: 'include', ...opciones });
   } catch {
     throw new Error('No se pudo conectar con el servidor. ¿Está levantado el back-end?');
   }
+}
+
+//mje de error
+async function mensajeDeError(respuesta) {  
+  if (respuesta.status === 403) {
+    return 'No tenés permiso para realizar esta acción.';
+  }
+  const texto = await respuesta.text();
+  if (texto && !texto.trimStart().startsWith('{')) {
+    return texto;
+  }
+  if (respuesta.status === 401) {
+    return 'Tu sesión expiró. Volvé a iniciar sesión.';
+  }
+  return 'El servidor devolvió un error.';
+}
+
+//pide el token csrf, después de iniciar o cerrar sesión cambia x eso se pide en cada post
+async function obtenerCsrf() {
+  const respuesta = await pedir('/acceso/csrf');
+  if (!respuesta.ok) {
+    throw new Error(await mensajeDeError(respuesta));
+  }
+  return respuesta.json();
+}
+
+/**
+ * hace un post con los datos como formulario y pide el token csrf en el header
+ *
+ * @param {string} ruta ruta del endpoint por ej '/acceso/login'
+ * @param {Object<string, string>} datos campos del formulario
+ */
+export async function postFormulario(ruta, datos) {
+  const { headerName, token } = await obtenerCsrf();
+
+  const respuesta = await pedir(ruta, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      [headerName]: token,
+    },
+    body: new URLSearchParams(datos),
+  });
 
   if (!respuesta.ok) {
-    const mensaje = await respuesta.text();
-    throw new Error(mensaje || 'El servidor devolvió un error.');
+    throw new Error(await mensajeDeError(respuesta));
   }
+}
+
+/**
+ * hace un get y devuelve el JSON de la respuesta, si no hay sesión iniciada devuelve null
+ * 
+ * @param {string} ruta
+ */
+export async function getJson(ruta) {
+
+  const respuesta = await pedir(ruta);
+  if (respuesta.status === 401) {
+    return null;
+  }
+  if (!respuesta.ok) {
+    throw new Error(await mensajeDeError(respuesta));
+  }
+  return respuesta.json();
 }
