@@ -33,7 +33,7 @@ async function obtenerCsrf() {
   return respuesta.json();
 }
 
-/**
+/** 
  * hace un post con los datos como formulario y pide el token csrf en el header
  *
  * @param {string} ruta ruta del endpoint por ej '/acceso/login'
