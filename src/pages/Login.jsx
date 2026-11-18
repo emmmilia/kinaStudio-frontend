@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { iniciarSesion, obtenerSesion } from '../api/acceso';
 import './Login.css';
 
-export default function Login({ alIniciarSesion }) {
+export default function Login({ alIniciarSesion, alOlvidarPassword }) {
   const [nombreUsuario, setNombreUsuario] = useState('');
   const [password, setPassword] = useState('');
   const [enviando, setEnviando] = useState(false);
@@ -19,7 +19,7 @@ export default function Login({ alIniciarSesion }) {
       if (!sesion) {
         throw new Error('No se pudo iniciar la sesión.');
       }
-      
+      // Al avisarle a App, esta pantalla se reemplaza por la siguiente
       alIniciarSesion(sesion);
     } catch (error) {
       setMensajeError(error instanceof Error ? error.message : 'Ocurrió un error inesperado.');
@@ -57,6 +57,10 @@ export default function Login({ alIniciarSesion }) {
           {enviando ? 'Ingresando…' : 'Ingresar'}
         </button>
       </form>
+
+      <button type="button" className="enlace" onClick={alOlvidarPassword}>
+        ¿Olvidaste tu contraseña?
+      </button>
 
       {mensajeError && <p className="mensaje mensaje-error" role="alert">{mensajeError}</p>}
     </main>

@@ -14,6 +14,14 @@ export function obtenerSesion() {
   return getJson('/acceso/yo');
 }
 
+export function restablecerPassword(token, passwordNueva) {
+  return postFormulario('/acceso/restablecerPassword', { token, passwordNueva });
+}
+
+export function recuperarPassword(email) {
+  return postFormulario('/acceso/recuperarPassword', { email });
+}
+
 /**
  * Registra una esteticista, solo puede hacerlo un admin.
  *

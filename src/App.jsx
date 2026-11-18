@@ -2,14 +2,25 @@ import { useEffect, useState } from 'react';
 import { cerrarSesion, obtenerSesion } from './api/acceso';
 import Login from './pages/Login';
 import Perfil from './pages/Perfil';
+import RecuperarPassword from './pages/RecuperarPassword';
 import RegistroEsteticista from './pages/RegistroEsteticista';
+import RestablecerPassword from './pages/RestablecerPassword';
 import './App.css';
+
+/** Lee el token del enlace del mail (?token=...). Vacío si no hay. */
+function leerTokenDeLaUrl() {
+  return new URLSearchParams(window.location.search).get('token') ?? '';
+}
 
 export default function App() {
   // undefined = todavía consultando al back, null = sin sesión, objeto = usuario con sesión
   const [sesion, setSesion] = useState(undefined);
   // Pantalla que se está mostrando: 'inicio' o 'perfil'
   const [pantalla, setPantalla] = useState('inicio');
+  // Pantalla sin sesión: 'login' o 'recuperar'
+  const [pantallaPublica, setPantallaPublica] = useState('login');
+  // Token del enlace de recuperación de contraseña, si el usuario llegó desde el mail
+  const [tokenRecuperacion, setTokenRecuperacion] = useState(leerTokenDeLaUrl);
 
   // Al abrir o recargar la página se pregunta si ya hay una sesión iniciada
   useEffect(() => {
@@ -26,6 +37,13 @@ export default function App() {
     };
   }, []);
 
+  // El token se saca de la barra de direcciones para que no quede en el historial del navegador
+  useEffect(() => {
+    if (window.location.search) {
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, []);
+
   async function alCerrarSesion() {
     try {
       await cerrarSesion();
@@ -36,12 +54,28 @@ export default function App() {
     setSesion(null);
   }
 
+  function terminarRecuperacion() {
+    setTokenRecuperacion('');
+    setPantallaPublica('login');
+  }
+
   if (sesion === undefined) {
     return <p className="cargando">Cargando…</p>;
   }
 
   if (sesion === null) {
-    return <Login alIniciarSesion={setSesion} />;
+    if (tokenRecuperacion) {
+      return <RestablecerPassword token={tokenRecuperacion} alTerminar={terminarRecuperacion} />;
+    }
+    if (pantallaPublica === 'recuperar') {
+      return <RecuperarPassword alVolver={() => setPantallaPublica('login')} />;
+    }
+    return (
+      <Login
+        alIniciarSesion={setSesion}
+        alOlvidarPassword={() => setPantallaPublica('recuperar')}
+      />
+    );
   }
 
   return (
