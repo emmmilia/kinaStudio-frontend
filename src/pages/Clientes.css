@@ -1,0 +1,106 @@
+.clientes {
+  max-width: 800px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+}
+
+.clientes-encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.clientes table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.clientes th,
+.clientes td {
+  text-align: left;
+  padding: 0.6rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.clientes th {
+  color: #8a4fff;
+  font-weight: 600;
+}
+
+.clientes .acciones {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Botones */
+.clientes button {
+  padding: 0.5rem 0.9rem;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.clientes .boton-principal {
+  border: none;
+  background: #8a4fff;
+  color: #fff;
+}
+
+.clientes .boton-secundario {
+  border: 1px solid #8a4fff;
+  background: transparent;
+  color: #8a4fff;
+}
+
+.clientes .boton-peligro {
+  border: 1px solid #b91c1c;
+  background: transparent;
+  color: #b91c1c;
+}
+
+.clientes button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.clientes button.enlace {
+  padding: 0;
+  border: none;
+  background: none;
+  color: #8a4fff;
+  text-decoration: underline;
+}
+
+/* Formulario de registrar / modificar */
+.formulario-cliente {
+  max-width: 420px;
+}
+
+.formulario-cliente form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formulario-cliente label {
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.formulario-cliente input,
+.formulario-cliente textarea {
+  padding: 0.6rem;
+  font-size: 1rem;
+  font-family: inherit;
+  border: 1px solid #999;
+  border-radius: 6px;
+}
+
+.formulario-cliente .boton-principal {
+  margin-top: 1rem;
+  padding: 0.7rem;
+  font-size: 1rem;
+}
