@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { cerrarSesion, obtenerSesion } from './api/acceso';
+import Clientes from './pages/Clientes';
 import Login from './pages/Login';
 import Perfil from './pages/Perfil';
 import RecuperarPassword from './pages/RecuperarPassword';
@@ -15,7 +16,7 @@ function leerTokenDeLaUrl() {
 export default function App() {
   // undefined = todavía consultando al back, null = sin sesión, objeto = usuario con sesión
   const [sesion, setSesion] = useState(undefined);
-  // Pantalla que se está mostrando: 'inicio' o 'perfil'
+  // Pantalla que se está mostrando: 'inicio', 'perfil' o 'clientes'
   const [pantalla, setPantalla] = useState('inicio');
   // Pantalla sin sesión: 'login' o 'recuperar'
   const [pantallaPublica, setPantallaPublica] = useState('login');
@@ -88,6 +89,9 @@ export default function App() {
           <button type="button" onClick={() => setPantalla('perfil')}>
             Mi perfil
           </button>
+          <button type="button" onClick={() => setPantalla('clientes')}>
+            Clientes
+          </button>
         </nav>
         <div className="usuario">
           <span>
@@ -100,6 +104,8 @@ export default function App() {
       </header>
 
       {pantalla === 'perfil' && <Perfil nombreUsuario={sesion.nombreUsuario} />}
+
+      {pantalla === 'clientes' && <Clientes />}
 
       {pantalla === 'inicio' && sesion.rol === 'ADMINISTRADOR' && <RegistroEsteticista />}
 
