@@ -3,12 +3,13 @@ import { cerrarSesion, obtenerSesion } from './api/acceso';
 import Clientes from './pages/Clientes';
 import Login from './pages/Login';
 import Perfil from './pages/Perfil';
+import Materiales from './pages/Materiales';
 import RecuperarPassword from './pages/RecuperarPassword';
 import RegistroEsteticista from './pages/RegistroEsteticista';
 import RestablecerPassword from './pages/RestablecerPassword';
 import './App.css';
 
-/** Lee el token del enlace del mail (?token=...). Vacío si no hay. */
+/** Lee el token del enlace del mail (?token=...). Vacío si no hay */
 function leerTokenDeLaUrl() {
   return new URLSearchParams(window.location.search).get('token') ?? '';
 }
@@ -23,7 +24,7 @@ export default function App() {
   // Token del enlace de recuperación de contraseña, si el usuario llegó desde el mail
   const [tokenRecuperacion, setTokenRecuperacion] = useState(leerTokenDeLaUrl);
 
-  // Al abrir o recargar la página se pregunta si ya hay una sesión iniciada
+  //al abrir o recargar la página se pregunta si ya hay una sesión iniciada
   useEffect(() => {
     let activo = true;
     obtenerSesion()
@@ -38,7 +39,7 @@ export default function App() {
     };
   }, []);
 
-  // El token se saca de la barra de direcciones para que no quede en el historial del navegador
+  //el token se saca de la barra de direcciones para que no quede en el historial del navegador
   useEffect(() => {
     if (window.location.search) {
       window.history.replaceState({}, '', window.location.pathname);
@@ -49,7 +50,7 @@ export default function App() {
     try {
       await cerrarSesion();
     } catch {
-      // Aunque falle el aviso al back, se vuelve a la pantalla de login
+      //aunque falle el aviso al back se vuelve a la pantalla de login
     }
     setPantalla('inicio');
     setSesion(null);
@@ -92,6 +93,9 @@ export default function App() {
           <button type="button" onClick={() => setPantalla('clientes')}>
             Clientes
           </button>
+          <button type="button" onClick={() => setPantalla('materiales')}>
+            Materiales
+          </button>
         </nav>
         <div className="usuario">
           <span>
@@ -105,7 +109,9 @@ export default function App() {
 
       {pantalla === 'perfil' && <Perfil nombreUsuario={sesion.nombreUsuario} />}
 
-      {pantalla === 'clientes' && <Clientes />}
+      {pantalla === 'materiales' && sesion.rol === 'ADMINISTRADOR' && <Materiales />}
+
+      {pantalla === 'clientes' && sesion.rol === 'ADMINISTRADOR' &&<Clientes />}
 
       {pantalla === 'inicio' && sesion.rol === 'ADMINISTRADOR' && <RegistroEsteticista />}
 

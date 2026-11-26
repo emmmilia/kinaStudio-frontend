@@ -1,0 +1,181 @@
+.materiales {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.materiales-encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.materiales button {
+  padding: 0.5rem 0.9rem;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 6px;
+  background: #8a4fff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.materiales button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.materiales button.secundario {
+  background: transparent;
+  border: 1px solid #8a4fff;
+  color: #8a4fff;
+}
+
+.materiales button.peligro {
+  background: #b91c1c;
+}
+
+.materiales button.peligro-suave {
+  background: transparent;
+  border: 1px solid #b91c1c;
+  color: #b91c1c;
+}
+
+.materiales button.enlace {
+  padding: 0;
+  background: none;
+  color: inherit;
+  text-decoration: underline;
+}
+
+.materiales-filtros {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+}
+
+.materiales-filtros input,
+.materiales-filtros select {
+  padding: 0.5rem;
+  font-size: 0.95rem;
+  border: 1px solid #999;
+  border-radius: 6px;
+}
+
+.materiales-filtros input {
+  flex: 1;
+  min-width: 220px;
+}
+
+.tabla-contenedor {
+  overflow-x: auto;
+}
+
+.tabla-materiales {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-materiales th,
+.tabla-materiales td {
+  padding: 0.6rem 0.7rem;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.tabla-materiales .numero {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.tabla-materiales .acciones {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  white-space: nowrap;
+}
+
+.estado {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.estado-ok {
+  background: #e3f6e8;
+  color: #14532d;
+}
+
+.estado-bajo {
+  background: #fff3cd;
+  color: #7a5200;
+}
+
+.estado-sin {
+  background: #fde4e4;
+  color: #7f1d1d;
+}
+
+.materiales .mensaje {
+  margin-top: 1rem;
+  padding: 0.7rem;
+  border-radius: 6px;
+}
+
+.materiales .mensaje-ok {
+  background: #e3f6e8;
+  color: #14532d;
+}
+
+.materiales .mensaje-error {
+  background: #fde4e4;
+  color: #7f1d1d;
+}
+
+/* Formulario de alta y modificación */
+.materiales-formulario {
+  max-width: 420px;
+  margin-top: 3rem;
+}
+
+.materiales-formulario form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.materiales-formulario label {
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.materiales-formulario input,
+.materiales-formulario select {
+  padding: 0.6rem;
+  font-size: 1rem;
+  border: 1px solid #999;
+  border-radius: 6px;
+}
+
+.materiales-formulario small {
+  color: #666;
+}
+
+.botones-formulario {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.botones-formulario button {
+  flex: 1;
+  padding: 0.7rem;
+  font-size: 1rem;
+}
