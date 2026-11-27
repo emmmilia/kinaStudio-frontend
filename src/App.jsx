@@ -7,6 +7,7 @@ import Materiales from './pages/Materiales';
 import RecuperarPassword from './pages/RecuperarPassword';
 import RegistroEsteticista from './pages/RegistroEsteticista';
 import RestablecerPassword from './pages/RestablecerPassword';
+import Servicios from './pages/Servicios';
 import './App.css';
 
 /** Lee el token del enlace del mail (?token=...). Vacío si no hay */
@@ -96,6 +97,9 @@ export default function App() {
           <button type="button" onClick={() => setPantalla('materiales')}>
             Materiales
           </button>
+          <button type="button" onClick={() => setPantalla('servicios')}>
+            Servicios
+          </button>
         </nav>
         <div className="usuario">
           <span>
@@ -110,6 +114,8 @@ export default function App() {
       {pantalla === 'perfil' && <Perfil nombreUsuario={sesion.nombreUsuario} />}
 
       {pantalla === 'materiales' && sesion.rol === 'ADMINISTRADOR' && <Materiales />}
+
+      {pantalla === 'servicios' && sesion.rol === 'ADMINISTRADOR' && <Servicios />}
 
       {pantalla === 'clientes' && sesion.rol === 'ADMINISTRADOR' &&<Clientes />}
 
